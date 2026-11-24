@@ -1,11 +1,26 @@
 import { useState, useEffect } from 'react'
 import NoteCard from './NoteCard.jsx'
 
+const startingNotes = [
+  {
+    id: 1,
+    title: 'Review map and filter',
+    body: 'Redo the TodoMVC steps without looking at the guide.',
+  },
+  {
+    id: 2,
+    title: 'Prepare for the quiz',
+    body: 'Practice writing one handler for many inputs.',
+  },
+]
+
 function Notes() {
-  const [notes, setNotes] = useState([
-    { id: 1, title: 'Review map and filter', body: 'Redo the TodoMVC steps without looking at the guide.' },
-    { id: 2, title: 'Prepare for the quiz', body: 'Practice writing one handler for many inputs.' },
-  ])
+  const [notes, setNotes] = useState(() => {
+    const saved = localStorage.getItem('notes')
+    return saved ? JSON.parse(saved) : startingNotes
+  })
+
+
   const [form, setForm] = useState({ title: '', body: '' })
   const [search, setSearch] = useState('')
 
@@ -18,6 +33,8 @@ function Notes() {
     setForm({ ...form, [name]: value })
   }
 
+
+
   function handleSubmit(e) {
     e.preventDefault()
     const title = form.title.trim()
@@ -27,13 +44,21 @@ function Notes() {
     setForm({ title: '', body: '' })
   }
 
+
+
   function handleDelete(id) {
     setNotes(notes.filter((note) => note.id !== id))
   }
 
+
+
   const shownNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(search.toLowerCase())
   )
+
+
+
+
 
   return (
     <div className="grid min-h-screen grid-cols-[420px_1fr]">
@@ -41,6 +66,9 @@ function Notes() {
         <h1 className="text-[72px] leading-none font-extralight text-[#b83f45]">
           notes
         </h1>
+
+
+
 
         <div>
           <p className="mb-2 text-[13px] font-normal tracking-wide text-[#949494]">SEARCH</p>
@@ -51,6 +79,9 @@ function Notes() {
             className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
         </div>
+
+
+
 
         <form className="grid gap-3" onSubmit={handleSubmit}>
           <p className="text-[13px] font-normal tracking-wide text-[#949494]">NEW NOTE</p>
