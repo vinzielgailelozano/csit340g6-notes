@@ -28,6 +28,13 @@ function Notes() {
     localStorage.setItem('notes', JSON.stringify(notes))
   }, [notes])
 
+    useEffect(() => {
+    const id = setTimeout(() => {
+      localStorage.setItem('draft', JSON.stringify(form))
+    }, 1000)
+    return () => clearTimeout(id)
+  }, [form])
+
   function handleChange(e) {
     const { name, value } = e.target
     setForm({ ...form, [name]: value })
@@ -92,6 +99,7 @@ function Notes() {
             onChange={handleChange}
             className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
+
           <textarea
             name="body"
             placeholder="Write your note"
@@ -99,14 +107,18 @@ function Notes() {
             onChange={handleChange}
             className="h-[120px] w-full resize-none py-3 border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
+
           <button
             type="submit"
             className="h-[50px] cursor-pointer bg-[#b83f45] text-[17px] font-normal text-white hover:bg-[#a33439]"
           >
+
             Add note
           </button>
         </form>
       </aside>
+
+
 
       <section className="px-12 py-11">
         <h2 className="mb-6 text-3xl">All notes</h2>
